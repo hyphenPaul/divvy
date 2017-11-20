@@ -17,6 +17,8 @@ defmodule DivvyWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    resources "/events", EventsController # This will need to be behind authentication
+    resources "/users", UsersController
   end
 
   # Other scopes may use custom stacks.
