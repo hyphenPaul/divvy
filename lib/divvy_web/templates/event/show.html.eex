@@ -15,3 +15,7 @@
 <span><%= link "Edit Event", to: event_path(@conn, :edit, @event) %></span>
 <span><%= link "My Events", to: event_path(@conn, :index) %></span>
 <span><%= link "Add Gift", to: gift_path(@conn, :new, @event) %></span>
+
+<%= for gift <- @event.gifts do %>
+  <%= render "gift.html", conn: @conn, gift: gift, owned?: created_gift?(gift, @current_user) %>
+<% end %>

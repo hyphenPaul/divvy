@@ -9,7 +9,7 @@ defmodule DivvyWeb.EventController do
   end
 
   def index(conn, _params, user) do
-    events = user |> Events.list_events()
+    events = Events.list_events(user)
     render(conn, "index.html", events: events)
   end
 

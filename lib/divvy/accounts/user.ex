@@ -9,7 +9,9 @@ defmodule Divvy.Accounts.User do
     field :name, :string
     field :password, :string, virtual: true
     field :password_hash, :string
+
     has_many :owned_events, Divvy.Events.Event, foreign_key: :owner_id
+    has_many :gifts, Divvy.Events.Gift
     many_to_many :events, Divvy.Events.Event, join_through: "events_users"
 
     timestamps()

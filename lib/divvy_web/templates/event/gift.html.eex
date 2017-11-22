@@ -1,0 +1,15 @@
+<div class="card">
+  <ul>
+    <li>
+      <%= @gift.name %>
+    </li>
+    <li>
+      <%= @gift.description %>
+    </li>
+    <%= if @owned? do %>
+      <span>
+        <%= link "Delete", to: gift_path(@conn, :delete, @gift), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs"       %>
+      </span>
+    <% end %>
+  </ul>
+</div>

@@ -8,8 +8,10 @@ defmodule Divvy.Events.Event do
     field :date, :naive_datetime
     field :description, :string
     field :name, :string
+
     belongs_to :owner, Divvy.Accounts.User, foreign_key: :owner_id
     many_to_many :users, Divvy.Accounts.User, join_through: "events_users"
+    has_many :gifts, Divvy.Events.Gift
 
     timestamps()
   end

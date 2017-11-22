@@ -31,6 +31,8 @@ defmodule DivvyWeb.Router do
 
     resources "/events", EventController
     resources "/users", UserController, only: [:show, :edit, :update]
+
+    resources "/gifts", GiftController, only: [:create, :delete]
     get "/gifts/new/:event_id", GiftController, :new
   end
 

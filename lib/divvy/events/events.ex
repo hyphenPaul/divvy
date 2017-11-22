@@ -35,7 +35,10 @@ defmodule Divvy.Events do
       ** (Ecto.NoResultsError)
 
   """
-  def get_event!(id), do: Repo.get!(Event, id)
+  def get_event!(id) do
+    Repo.get!(Event, id)
+    |> Repo.preload(:gifts)
+  end
 
   @doc """
   Creates a event.
@@ -101,5 +104,73 @@ defmodule Divvy.Events do
   """
   def change_event(%Event{} = event) do
     Event.changeset(event, %{})
+  end
+
+  alias Divvy.Events.Gift
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking gift changes.
+
+  ## Examples
+
+      iex> change_gift(gift)
+      %Ecto.Changeset{source: %Gift{}}
+
+  """
+  def change_gift(%Gift{} = gift) do
+    Gift.changeset(gift, %{})
+  end
+
+  @doc """
+  Creates a gift.
+
+  ## Examples
+
+      iex> create_gift(%{field: value})
+      {:ok, %Gift{}}
+
+      iex> create_gift(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_gift(attrs \\ %{}, user) do
+    user
+    |> Ecto.build_assoc(:gifts)
+    |> Gift.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Deletes a Gift.
+
+  ## Examples
+
+      iex> delete_gift(gift)
+      {:ok, %Gift{}}
+
+      iex> delete_gift(gift)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_gift(%Gift{} = gift) do
+    Repo.delete(gift)
+  end
+
+  @doc """
+  Gets a single Gift.
+
+  Raises `Ecto.NoResultsError` if the gift does not exist.
+
+  ## Examples
+
+      iex> get_gift!(123)
+      %gift{}
+
+      iex> get_gift!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_gift!(id) do
+    Repo.get!(Gift, id)
   end
 end
