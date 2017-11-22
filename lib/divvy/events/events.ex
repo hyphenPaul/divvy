@@ -17,8 +17,8 @@ defmodule Divvy.Events do
       [%Event{}, ...]
 
   """
-  def list_events do
-    Repo.all(Event)
+  def list_events(user) do
+    Repo.all(Ecto.assoc(user, :owned_events))
   end
 
   @doc """
@@ -49,8 +49,9 @@ defmodule Divvy.Events do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_event(attrs \\ %{}) do
-    %Event{}
+  def create_event(attrs \\ %{}, user) do
+    user
+    |> Ecto.build_assoc(:owned_events)
     |> Event.changeset(attrs)
     |> Repo.insert()
   end

@@ -7,18 +7,31 @@ defmodule DivvyWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug DivvyWeb.Auth
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  #pipeline :api do
+    #plug :accepts, ["json"]
+  #end
+
+  scope "/", DivvyWeb do
+    pipe_through :browser
+
+    get "/", PageController, :index
+
+    get "/login", SessionController, :new
+    resources "/sessions", SessionController, only: [:create, :delete]
+
+    get "/register", UserController, :new
+    post "/register/create", UserController, :create
   end
 
   scope "/", DivvyWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :authenticate_user]
 
-    get "/", PageController, :index
-    resources "/events", EventsController # This will need to be behind authentication
-    resources "/users", UsersController
+    resources "/events", EventController
+    resources "/users", UserController, only: [:show, :edit, :update]
+    get "/gifts/new/:event_id", GiftController, :new
   end
 
   # Other scopes may use custom stacks.

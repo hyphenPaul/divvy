@@ -17,8 +17,18 @@ defmodule Divvy.Events.Event do
   @doc false
   def changeset(%Event{} = event, attrs) do
     event
-    |> cast(attrs, [:name, :date, :description, :user_id])
+    |> cast(attrs, [:name, :date, :description, :owner_id])
     |> validate_required([:name, :date, :description])
+    |> validate_date_in_future()
     |> assoc_constraint(:owner)
+  end
+
+  defp validate_date_in_future(changeset) do
+    validate_change(changeset, :date, fn :date, date ->
+      case NaiveDateTime.compare(date, NaiveDateTime.utc_now()) do
+        :lt -> [date: "Must be in the future"]
+        _ -> []
+      end
+    end)
   end
 end

@@ -11,7 +11,7 @@ defmodule Divvy.Repo.Migrations.CreateUsers do
       timestamps()
     end
 
-    create unique_index(:users, [:email])
     create index(:users, [:event_id])
+    create unique_index(:users, [:email])
   end
 end

@@ -50,8 +50,9 @@ defmodule Divvy.Accounts do
 
   """
   def create_user(attrs \\ %{}) do
+IO.puts(inspect(User.registration_changeset(%User{}, attrs)))
     %User{}
-    |> User.changeset(attrs)
+    |> User.registration_changeset(attrs)
     |> Repo.insert()
   end
 

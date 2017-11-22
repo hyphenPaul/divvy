@@ -17,3 +17,6 @@ config :divvy, Divvy.Repo,
   database: "divvy_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Limit the rounds of encryption when hashing to keep tests fast
+config :bcrypt_elixir, :log_rounds, 4
