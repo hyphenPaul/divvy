@@ -10,6 +10,7 @@ defmodule Divvy.Events.Gift do
 
     belongs_to :user, Divvy.Accounts.User
     belongs_to :event, Divvy.Events.Event
+    has_many :comments, Divvy.Events.Comment
 
     timestamps()
   end

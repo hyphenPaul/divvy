@@ -10,7 +10,7 @@ defmodule Divvy.Events.Event do
     field :name, :string
 
     belongs_to :owner, Divvy.Accounts.User, foreign_key: :owner_id
-    many_to_many :users, Divvy.Accounts.User, join_through: "events_users"
+    many_to_many :members, Divvy.Accounts.User, join_through: Divvy.Events.Membership
     has_many :gifts, Divvy.Events.Gift
 
     timestamps()

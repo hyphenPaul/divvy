@@ -7,6 +7,10 @@ defmodule Divvy.Events do
   alias Divvy.Repo
 
   alias Divvy.Events.Event
+  alias Divvy.Events.Gift
+  alias Divvy.Events.Membership
+  alias Divvy.Events.Comment
+  alias Divvy.Accounts.User
 
   @doc """
   Returns the list of events.
@@ -18,7 +22,7 @@ defmodule Divvy.Events do
 
   """
   def list_events(user) do
-    Repo.all(Ecto.assoc(user, :owned_events))
+    Repo.all(Ecto.assoc(user, :events))
   end
 
   @doc """
@@ -38,6 +42,7 @@ defmodule Divvy.Events do
   def get_event!(id) do
     Repo.get!(Event, id)
     |> Repo.preload(:gifts)
+    |> Repo.preload(:members)
   end
 
   @doc """
@@ -106,7 +111,21 @@ defmodule Divvy.Events do
     Event.changeset(event, %{})
   end
 
-  alias Divvy.Events.Gift
+  @doc """
+  Adds a member to an event. Returns %Event{}
+
+  ## Examples
+
+      iex> add_member(event, user)
+      {:ok, %Event{}}
+
+  """
+  def add_member(%Event{} = event, %User{} = user) do
+    %Membership{}
+    |> Membership.changeset(%{user_id: user.id, event_id: event.id})
+    |> Repo.update!()
+  end
+
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking gift changes.
@@ -172,5 +191,78 @@ defmodule Divvy.Events do
   """
   def get_gift!(id) do
     Repo.get!(Gift, id)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking comment changes.
+
+  ## Examples
+
+      iex> change_comment(comment)
+      %Ecto.Changeset{source: %Comment{}}
+
+  """
+  def change_comment(%Comment{} = comment, gift) do
+    Comment.changeset(comment, %{gift_id: gift.id})
+  end
+
+  @doc """
+  Creates a comment.
+
+  ## Examples
+
+      iex> create_comment(%{field: value})
+      {:ok, %Comment{}}
+
+      iex> create_comment(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_comment(attrs \\ %{}, user) do
+    user
+    |> Ecto.build_assoc(:comments)
+    |> Comment.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def gift_comments(gift) do
+    Repo.all from c in Ecto.assoc(gift, :comments),
+             join: u in assoc(c, :user),
+             order_by: c.inserted_at,
+             preload: [user: u]
+  end
+
+  @doc """
+  Gets a single comment.
+
+  Raises `Ecto.NoResultsError` if the comment does not exist.
+
+  ## Examples
+
+      iex> get_comment!(123)
+      %Comment{}
+
+      iex> get_comment!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_comment!(id) do
+    Repo.get!(Comment, id)
+  end
+
+  @doc """
+  Deletes a comment.
+
+  ## Examples
+
+      iex> delete_comment(comment)
+      {:ok, %Comment{}}
+
+      iex> delete_comment(comment)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_comment(%Comment{} = comment) do
+    Repo.delete(comment)
   end
 end

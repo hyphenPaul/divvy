@@ -13,20 +13,22 @@
 
   <body>
     <div class="container">
-      <header class="header">
-        <ol class="breadcrumb text-right">
-          <%= if @current_user do %>
-            <li><%= @current_user.name %></li>
-            <li>
-            <%= link "log out", to: session_path(@conn, :delete, @current_user), method: :delete %>
-            </li>
-          <% else %>
-            <li><%= link "Register", to: user_path(@conn, :new) %></li>
-            <li><%= link "Log in", to: session_path(@conn, :new) %></li>
-          <% end %>
-        </ol>
-        <span class="logo"></span>
-      </header>
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse">
+            <a class="navbar-brand" href="/"><b>DIVVY</b></a>
+            <ul class="nav navbar-nav navbar-right">
+              <%= if @current_user do %>
+                <li><p class="navbar-text"><%= link @current_user.name, to: user_path(@conn, :show, @current_user) %></p></li>
+                <li><button type="button" class="btn btn-default navbar-btn"><%= link "log out", to: session_path(@conn, :delete, @current_user), method: :delete %></button></li>
+              <% else %>
+                <li><%= link "Register", to: user_path(@conn, :new) %></li>
+                <li><%= link "Log in", to: session_path(@conn, :new) %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </nav>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>

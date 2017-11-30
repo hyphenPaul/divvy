@@ -12,7 +12,8 @@ defmodule Divvy.Accounts.User do
 
     has_many :owned_events, Divvy.Events.Event, foreign_key: :owner_id
     has_many :gifts, Divvy.Events.Gift
-    many_to_many :events, Divvy.Events.Event, join_through: "events_users"
+    has_many :comments, Divvy.Events.Comment
+    many_to_many :events, Divvy.Events.Event, join_through: Divvy.Events.Membership
 
     timestamps()
   end

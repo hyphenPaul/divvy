@@ -1,0 +1,18 @@
+<li class="list-group-item event-gift-comment">
+  
+  <div class="clearfix">
+    <div class="pull-left">
+      <div><span><b><%= @comment.user.name %>:</b></span> <%= @comment.comment %></div>
+      <div class="event-gift-comment-date">
+        <em><%= comment_date_to_s(@comment.inserted_at) %></em>
+      </div>
+    </div>
+    <div class="pull-right">
+      <%= if created_comment?(@comment, @current_user) do %>
+          <%= link to: comment_path(@conn, :delete, @comment, @event), method: :delete, data: [confirm: "Are you sure you want to delete this gift?"], class: "text-danger" do  %>
+            <span class="glyphicon glyphicon-remove" aria-hidden= "true"></span>
+          <% end %>
+      <% end %>
+    </div>
+  </div>
+</li>

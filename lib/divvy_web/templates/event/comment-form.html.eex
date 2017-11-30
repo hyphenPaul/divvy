@@ -1,0 +1,12 @@
+<li class="event-gift-comment-form list-group-item">
+  <div class="clearfix">
+    <%= form_for @changeset, comment_path(@conn, :create), [class: "form-inline"], fn f -> %>
+      <%= hidden_input f, :gift_id, value: @gift.id %>
+
+      <div class="form_group">
+        <%= label f, :comment, class: "control-label" %>
+        <%= text_input f, :comment, class: "form-control" %>
+      </div>
+    <% end %>
+  </div>
+</li>

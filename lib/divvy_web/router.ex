@@ -34,6 +34,9 @@ defmodule DivvyWeb.Router do
 
     resources "/gifts", GiftController, only: [:create, :delete]
     get "/gifts/new/:event_id", GiftController, :new
+
+    post "/comments", CommentController, :create
+    delete "/comments/:id/:event_id", CommentController, :delete
   end
 
   # Other scopes may use custom stacks.

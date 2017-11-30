@@ -21,6 +21,8 @@ defmodule DivvyWeb.EventController do
   def create(conn, %{"event" => event_params}, user) do
     case Events.create_event(event_params, user) do
       {:ok, event} ->
+        Events.add_member(event, user)
+
         conn
         |> put_flash(:info, "Event created successfully.")
         |> redirect(to: event_path(conn, :show, event))

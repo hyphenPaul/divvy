@@ -25,20 +25,6 @@
   </div>
 </div>
 
-<div class="panel panel-default">
-
-  <div class="panel-heading clearfix">
-    <h4 class="panel-title">Sean</hr>
-  </div>
-
-  <%= if @event.gifts do %>
-    <ul class="list-group">
-      <%= for gift <- @event.gifts do %>
-        <li class="list-group-item">
-          <%= render "gift.html", conn: @conn, gift: gift, owned?: created_gift?(gift, @current_user) %>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
-
-</div>
+<%= for member <- @event.members do %>
+  <%= render "member.html", event: @event, member: member, conn: @conn, current_user: @current_user %>
+<% end %>

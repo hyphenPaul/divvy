@@ -1,0 +1,25 @@
+<div class="panel panel-primary">
+
+  <div class="panel-heading clearfix">
+    <h4 class="panel-title"><%= @member.name %></hr>
+  </div>
+
+  <%= if DivvyWeb.EventView.gifts_for_member?(@event, @member) do %>
+    <ul class="list-group">
+      <%= for gift <- DivvyWeb.EventView.gifts_for_member(@event, @member) do %>
+        <li class="list-group-item">
+          <%= render "gift.html", conn: @conn, gift: gift, current_user: @current_user %>
+        </li>
+
+        <%= for comment <- gift_comments(gift) do %>
+          <%= if comment_visible?(comment, gift, @current_user) do %>
+            <%= render "comment.html", comment: comment, current_user: @current_user, gift: gift, event: @event, conn: @conn %>
+          <% end %>
+        <% end %>
+
+        <%= render "comment-form.html", gift: gift, conn: @conn, changeset: Divvy.Events.change_comment(%Divvy.Events.Comment{}, gift) %>
+      <% end %>
+    </ul>
+  <% end %>
+
+</div>
