@@ -13,6 +13,7 @@ defmodule Divvy.Accounts.User do
     has_many :owned_events, Divvy.Events.Event, foreign_key: :owner_id
     has_many :gifts, Divvy.Events.Gift
     has_many :comments, Divvy.Events.Comment
+    has_many :invitations, Divvy.Events.Invitation
     many_to_many :events, Divvy.Events.Event, join_through: Divvy.Events.Membership
 
     timestamps()
@@ -23,6 +24,7 @@ defmodule Divvy.Accounts.User do
     user
     |> cast(attrs, [:name, :email])
     |> validate_required([:name, :email])
+    |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
   end
 

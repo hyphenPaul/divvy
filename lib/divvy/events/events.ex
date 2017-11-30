@@ -265,4 +265,83 @@ defmodule Divvy.Events do
   def delete_comment(%Comment{} = comment) do
     Repo.delete(comment)
   end
+
+  alias Divvy.Events.Invitation
+
+  @doc """
+  Returns the list of invitations.
+
+  ## Examples
+
+      iex> list_invitations()
+      [%Invitation{}, ...]
+
+  """
+  def list_invitations do
+    Repo.all(Invitation)
+  end
+
+  @doc """
+  Gets a single invitation.
+
+  Raises `Ecto.NoResultsError` if the Invitation does not exist.
+
+  ## Examples
+
+      iex> get_invitation!(123)
+      %Invitation{}
+
+      iex> get_invitation!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_invitation!(id), do: Repo.get!(Invitation, id)
+
+  @doc """
+  Creates a invitation.
+
+  ## Examples
+
+      iex> create_invitation(%{field: value})
+      {:ok, %Invitation{}}
+
+      iex> create_invitation(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_invitation(attrs \\ %{}, user) do
+    user
+    |> Ecto.build_assoc(:invitations)
+    |> Invitation.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Deletes a Invitation.
+
+  ## Examples
+
+      iex> delete_invitation(invitation)
+      {:ok, %Invitation{}}
+
+      iex> delete_invitation(invitation)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_invitation(%Invitation{} = invitation) do
+    Repo.delete(invitation)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking invitation changes.
+
+  ## Examples
+
+      iex> change_invitation(invitation)
+      %Ecto.Changeset{source: %Invitation{}}
+
+  """
+  def change_invitation(%Invitation{} = invitation) do
+    Invitation.changeset(invitation, %{})
+  end
 end

@@ -1,0 +1,10 @@
+<%= form_for Divvy.Events.change_invitation(%Divvy.Events.Invitation{}), invitation_path(@conn, :create), [class: "form-inline"], fn f -> %>
+  <%= hidden_input f, :event_id, value: @event.id %>
+
+  <div class="form-group">
+    <%= label f, :email, class: "sr-only" %>
+    <%= email_input f, :email, class: "form-control" %>
+  </div>
+
+  <%= submit "Invite", class: "btn btn-default" %>
+<% end %>
