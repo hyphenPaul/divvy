@@ -18,7 +18,7 @@ defmodule DivvyWeb.InvitationController do
         |> redirect(to: event_path(conn, :show, invitation.event_id))
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
-        |> put_flash(:info, "#{inspect(changeset.errors)}") #TODO: Render this nicely with tranlast errors
+        |> put_flash(:info, "#{inspect(changeset.errors)}") #TODO: Render this nicely with translate_errors
         |> redirect(to: event_path(conn, :show, invitation_params["event_id"]))
     end
   end
