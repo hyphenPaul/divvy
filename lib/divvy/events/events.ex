@@ -123,7 +123,22 @@ defmodule Divvy.Events do
   def add_member(%Event{} = event, %User{} = user) do
     %Membership{}
     |> Membership.changeset(%{user_id: user.id, event_id: event.id})
-    |> Repo.update!()
+    |> Repo.update()
+  end
+
+  @doc """
+  Creates a membership for the first time. Returns %Event{}
+
+  ## Examples
+
+      iex> create_membership(event, user)
+      {:ok, %Event{}}
+
+  """
+  def create_membership(%Event{} = event, %User{} = user) do
+    %Membership{}
+    |> Membership.changeset(%{user_id: user.id, event_id: event.id})
+    |> Repo.insert()
   end
 
 
@@ -282,6 +297,24 @@ defmodule Divvy.Events do
   end
 
   @doc """
+  Returns the list of invitations for a user.
+
+  ## Examples
+
+      iex> list_invitations()
+      [%Invitation{}, ...]
+
+  """
+  def list_invitations(user) do
+    Repo.all from i in Invitation,
+             join: u in assoc(i, :creator),
+             join: e in assoc(i, :event),
+             where: i.email == ^user.email,
+             where: is_nil(i.accepted),
+             preload: [creator: u, event: e]
+  end
+
+  @doc """
   Gets a single invitation.
 
   Raises `Ecto.NoResultsError` if the Invitation does not exist.
@@ -295,7 +328,10 @@ defmodule Divvy.Events do
       ** (Ecto.NoResultsError)
 
   """
-  def get_invitation!(id), do: Repo.get!(Invitation, id)
+  def get_invitation!(id) do
+    Repo.get!(Invitation, id)
+    |> Repo.preload(:event)
+  end
 
   @doc """
   Creates a invitation.
@@ -343,5 +379,11 @@ defmodule Divvy.Events do
   """
   def change_invitation(%Invitation{} = invitation) do
     Invitation.changeset(invitation, %{})
+  end
+
+  def accept_invitation(invitation, user) do
+    invitation
+    |> Invitation.changeset(%{accepted: true})
+    |> Repo.update() 
   end
 end

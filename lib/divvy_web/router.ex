@@ -39,6 +39,8 @@ defmodule DivvyWeb.Router do
     delete "/comments/:id/:event_id", CommentController, :delete
 
     post "/invitations", InvitationController, :create
+    patch "/invitations/:id", InvitationController, :accept
+    delete "/invitations/:id", InvitationController, :delete
   end
 
   # Other scopes may use custom stacks.

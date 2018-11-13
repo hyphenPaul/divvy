@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-<%= for event <- @events do %>
+  <%= for event <- @events do %>
     <tr>
       <td><%= event.name %></td>
       <td><%= event.date %></td>
@@ -23,8 +23,35 @@
         <span><%= link "Delete", to: event_path(@conn, :delete, event), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
       </td>
     </tr>
-<% end %>
+  <% end %>
   </tbody>
 </table>
+
+<%= if length(@invitations) > 0 do %>
+  <h2>Invitations</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>Event</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <%= for invitation <- @invitations do %>
+      <tr>
+        <td><%= invitation.creator.name %></td>
+        <td><%= invitation.event.name %></td>
+        <td><%= invitation.event.description %></td>
+        <td class="text-right">
+          <span><%= link "Accept", to: invitation_path(@conn, :accept, invitation), method: :patch, class: "btn btn-default btn-xs" %></span>
+          <%#<span><%= link "Decline", to: invitation_path(@conn, :delete, invitation), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs"</span>%>%>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
 
 <span><%= link "New Event", to: event_path(@conn, :new) %></span>

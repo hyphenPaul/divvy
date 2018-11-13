@@ -52,7 +52,7 @@ config :phoenix, :stacktrace_depth, 20
 config :divvy, Divvy.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "postgres",
+  password: "PG92d3vp@assw0rd",
   database: "divvy_dev",
   hostname: "localhost",
   pool_size: 10

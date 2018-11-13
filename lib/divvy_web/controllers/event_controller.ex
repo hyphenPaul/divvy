@@ -10,7 +10,8 @@ defmodule DivvyWeb.EventController do
 
   def index(conn, _params, user) do
     events = Events.list_events(user)
-    render(conn, "index.html", events: events)
+    invitations = Events.list_invitations(user)
+    render(conn, "index.html", events: events, invitations: invitations)
   end
 
   def new(conn, _params, user) do
@@ -21,7 +22,7 @@ defmodule DivvyWeb.EventController do
   def create(conn, %{"event" => event_params}, user) do
     case Events.create_event(event_params, user) do
       {:ok, event} ->
-        Events.add_member(event, user)
+        Events.create_membership(event, user)
 
         conn
         |> put_flash(:info, "Event created successfully.")
