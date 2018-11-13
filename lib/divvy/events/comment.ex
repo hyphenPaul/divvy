@@ -6,6 +6,7 @@ defmodule Divvy.Events.Comment do
 
   schema "comments" do
     field :comment, :string
+    field :public, :boolean, default: false
     belongs_to :gift, Divvy.Events.Gift
     belongs_to :user, Divvy.Accounts.User
 
@@ -15,7 +16,7 @@ defmodule Divvy.Events.Comment do
   @doc false
   def changeset(%Comment{} = comment, attrs) do
     comment
-    |> cast(attrs, [:comment, :gift_id])
+    |> cast(attrs, [:comment, :gift_id, :public])
     |> validate_required([:comment])
     |> assoc_constraint(:gift)
     |> assoc_constraint(:user)

@@ -3,6 +3,7 @@ defmodule DivvyWeb.EventView do
 
   def comment_visible?(comment, gift, user) do
     cond do
+      comment.public -> true
       gift.user_id == user.id && comment.user_id == user.id -> true
       gift.user_id != user.id -> true
       true -> false

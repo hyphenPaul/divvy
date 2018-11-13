@@ -28,7 +28,7 @@ defmodule DivvyWeb.InvitationController do
     invitation = Events.get_invitation!(id)
     case Events.accept_invitation(invitation, user) do
       {:ok, invitation} ->
-        Event.add_member(invitation.event, user)
+        Events.add_member(invitation.event, user)
 
         redirect(conn, to: event_path(conn, :show, invitation.event_id))
       {:error, _} ->

@@ -97,3 +97,7 @@ https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */@media 
 .event-gift-comment {
   background-color: #f5f5f5;
 }
+
+.comment-text-input {
+  width: 100%!important;
+}

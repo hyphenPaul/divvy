@@ -4,8 +4,12 @@
       <%= hidden_input f, :gift_id, value: @gift.id %>
 
       <div class="form_group">
-        <%= label f, :comment, class: "control-label" %>
-        <%= text_input f, :comment, class: "form-control" %>
+        <%= label f, :public, class: "checkbox-inline" do %>
+          <%= checkbox f, :public %>
+          <%= "Show comment to #{@member.name}" %>
+        <%= end %>
+
+        <%= text_input f, :comment, class: "form-control comment-text-input", placeholder: "Comment"  %>
       </div>
     <% end %>
   </div>

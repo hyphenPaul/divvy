@@ -123,24 +123,8 @@ defmodule Divvy.Events do
   def add_member(%Event{} = event, %User{} = user) do
     %Membership{}
     |> Membership.changeset(%{user_id: user.id, event_id: event.id})
-    |> Repo.update()
-  end
-
-  @doc """
-  Creates a membership for the first time. Returns %Event{}
-
-  ## Examples
-
-      iex> create_membership(event, user)
-      {:ok, %Event{}}
-
-  """
-  def create_membership(%Event{} = event, %User{} = user) do
-    %Membership{}
-    |> Membership.changeset(%{user_id: user.id, event_id: event.id})
     |> Repo.insert()
   end
-
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking gift changes.
@@ -305,12 +289,11 @@ defmodule Divvy.Events do
       [%Invitation{}, ...]
 
   """
-  def list_invitations(user) do
+  def list_invitations(%User{} = user) do
     Repo.all from i in Invitation,
              join: u in assoc(i, :creator),
              join: e in assoc(i, :event),
-             where: i.email == ^user.email,
-             where: is_nil(i.accepted),
+             where: i.email == ^user.email and is_nil(i.accepted),
              preload: [creator: u, event: e]
   end
 

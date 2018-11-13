@@ -17,7 +17,7 @@
           <% end %>
         <% end %>
 
-        <%= render "comment-form.html", gift: gift, conn: @conn, changeset: Divvy.Events.change_comment(%Divvy.Events.Comment{}, gift) %>
+        <%= render "comment-form.html", gift: gift, conn: @conn, member: @member,  changeset: Divvy.Events.change_comment(%Divvy.Events.Comment{}, gift) %>
       <% end %>
     </ul>
   <% end %>
